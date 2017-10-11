@@ -1,0 +1,14 @@
+.card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    dashr-dash-card {
+        min-width: 200px;
+        padding: 10px;
+    }
+}
+.dash-divider {
+    padding: 0 0 6px 36px;
+    display: flex;
+    align-items: center;
+}

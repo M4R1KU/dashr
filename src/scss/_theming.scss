@@ -1,0 +1,9 @@
+@import '~@angular/material/theming';
+
+
+$config: mat-typography-config(
+    $font-family: 'Montserrat, Roboto, "Helvetica Neue", sans-serif'
+);
+
+@include mat-base-typography($config);
+@include angular-material-typography($config);
