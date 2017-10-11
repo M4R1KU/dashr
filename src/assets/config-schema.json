@@ -24,38 +24,63 @@
         "children": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/app_part"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/app_part"
+              },
+              {
+                "type": "string"
+              }
+            ]
           }
         }
       }
     }
   },
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "title": {
-        "type": "string"
-      },
-      "shortcut": {
-        "type": "string"
-      },
-      "urlTemplate": {
-        "type": "string",
-        "minLength": 4
-      },
-      "children": {
-        "type": "array",
-        "items": {
-          "$ref": "#/definitions/app_part"
-        }
+  "type": "object",
+  "properties": {
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "shortcut": {
+            "type": "string"
+          },
+          "urlTemplate": {
+            "type": "string",
+            "minLength": 4
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/app_part"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "title",
+          "shortcut",
+          "urlTemplate",
+          "children"
+        ]
       }
     },
-    "required": [
-      "title",
-      "shortcut",
-      "urlTemplate",
-      "children"
-    ]
+    "common": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/app_part"
+      }
+    }
   }
 }

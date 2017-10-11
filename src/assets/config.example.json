@@ -1,12 +1,46 @@
 {
-  "$schema": "./config-schema.json",
-  "title": "",
-  "shortcut": "",
-  "urlTemplate": "",
-  "children": [
+  "apps": [
     {
-      "shortcut": "",
-      "title": ""
+      "title": "app1",
+      "shortcut": "app1",
+      "urlTemplate": "https://{env}app.com/{path}",
+      "children": [
+        {
+          "title": "Env 1",
+          "shortcut": "env1",
+          "urlParts": {
+            "env": "env1."
+          },
+          "children": [
+            "common#app1_frontend",
+            "common#app1_ping"
+          ]
+        },
+        {
+          "title": "Env2",
+          "shortcut": "env2",
+          "urlParts": {
+            "env": "env2."
+          },
+          "children": [
+            "common#app1_frontend",
+            "common#app1_ping"
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "common": {
+    "app1_frontend": {
+      "title": "Frontend",
+      "shortcut": "frontend"
+    },
+    "app1_ping": {
+      "title": "Backend Ping",
+      "shortcut": "ping",
+      "urlParts": {
+        "path": "ping"
+      }
+    }
+  }
 }
