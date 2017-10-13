@@ -28,7 +28,7 @@ export class DashConfigParserService {
     }
 
     private _matchProfile(app: any, profile: string) {
-        return isEmpty(profile) || app.profile.toLowerCase() === profile.toLowerCase();
+        return isEmpty(profile) || isNullOrUndefined(app.profile) || app.profile.toLowerCase() === profile.toLowerCase();
     }
 
     private _parseChildWithUrl(child: any, urlTemplate: string, commonTypes: any): DashModel {

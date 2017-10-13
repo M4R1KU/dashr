@@ -25,7 +25,9 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this._configService.loadConfig()
-            .subscribe(dashModel => this.config$.next(dashModel));
+            .subscribe(configModel => {
+                this.config$.next(this._configService.parse(configModel, 'home'));
+            });
     }
 
     public dashChange(path: string) {

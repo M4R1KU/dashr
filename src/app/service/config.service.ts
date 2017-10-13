@@ -26,11 +26,10 @@ export class ConfigService {
         this._schema$.subscribe(this._init.bind(this));
     }
 
-    public loadConfig(): Observable<Array<DashModel>> {
+    public loadConfig(): Observable<ConfigModel> {
         return this._http.get<ConfigModel>(environment.configPath)
             .switchMap(config => this._validate(config))
-            .do(config => this._saveConfig(config))
-            .map(config => this.parse(config));
+            .do(config => this._saveConfig(config));
     }
 
     public switchProfile(profileId: string): Array<DashModel> {
@@ -57,11 +56,15 @@ export class ConfigService {
     }
 
     public getDefaultProfile(): Profile {
-        return (JSON.parse(localStorage.getItem('profile')) as Profile) || this._profiles[0];
+        return this.getCurrentProfile() || this._profiles[0];
     }
 
     public saveDefaultProfile(profile: Profile) {
         localStorage.setItem('profile', JSON.stringify(profile));
+    }
+
+    public getCurrentProfile(): Profile {
+        return JSON.parse(localStorage.getItem('profile')) as Profile;
     }
 
     private _init(schema: any) {
