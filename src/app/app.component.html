@@ -1,2 +1,5 @@
 <mat-toolbar color="primary"></mat-toolbar>
-<dashr-dash-line [dashChildren]="config$ | async"></dashr-dash-line>
+<dashr-dash-line [dashChildren]="config$ | async"
+                 [path]="path$ | async"
+                 (dashChange)="dashChange($event)">
+</dashr-dash-line>

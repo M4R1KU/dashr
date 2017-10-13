@@ -1,5 +1,7 @@
 @import '~@angular/material/theming';
+@import '../app/dash-card/dash-card-theming';
 
+@include mat-core();
 
 $config: mat-typography-config(
     $font-family: 'Montserrat, Roboto, "Helvetica Neue", sans-serif'
@@ -7,3 +9,11 @@ $config: mat-typography-config(
 
 @include mat-base-typography($config);
 @include angular-material-typography($config);
+
+$primary: mat-palette($mat-deep-purple);
+$accent:  mat-palette($mat-amber, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
+@include dash-card-theming($theme);

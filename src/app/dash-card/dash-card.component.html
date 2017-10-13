@@ -1,3 +1,11 @@
 <mat-card>
-    {{ dashModel.title }}
+    <a #link
+       [href]="dashModel.url"
+       target="_blank"
+       *ngIf="dashModel.url; else title">
+        {{dashModel.title}}
+    </a>
+    <ng-template #title>
+        <span>{{ dashModel.title }}</span>
+    </ng-template>
 </mat-card>

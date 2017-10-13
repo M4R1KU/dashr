@@ -7,6 +7,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule} from '@angular/http';
 import {DashLineComponent} from './dash-line/dash-line.component';
 import {DashCardComponent} from './dash-card/dash-card.component';
+import {DashConfigParser} from './parser/dash-config-parser.service';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import {DashCardComponent} from './dash-card/dash-card.component';
         HttpModule,
         DashrMaterialModule
     ],
-    providers: [],
+    providers: [
+        DashConfigParser
+    ],
     bootstrap: [
         AppComponent
     ]

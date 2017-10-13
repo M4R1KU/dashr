@@ -1,6 +1,9 @@
-import {parseModel} from './dash-config-parser';
+
+import {DashConfigParser} from './dash-config-parser.service';
 
 describe('DashModelParser', () => {
+    const parser: DashConfigParser = new DashConfigParser();
+
     it('parses basic model', () => {
         const obj = [{
             title: 'test',
@@ -9,7 +12,7 @@ describe('DashModelParser', () => {
             children: []
         }];
 
-        const result = parseModel(obj);
+        const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
             title: 'test',
             shortcut: 'test',
@@ -31,7 +34,7 @@ describe('DashModelParser', () => {
             ]
         }];
 
-        const result = parseModel(obj);
+        const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
             title: 'test',
             shortcut: 'test',
@@ -61,7 +64,7 @@ describe('DashModelParser', () => {
             ]
         }];
 
-        const result = parseModel(obj);
+        const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
             title: 'test',
             shortcut: 'test',
@@ -109,7 +112,7 @@ describe('DashModelParser', () => {
             ]
         }];
 
-        const result = parseModel(obj);
+        const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
             title: 'test',
             shortcut: 'test',
@@ -153,7 +156,7 @@ describe('DashModelParser', () => {
             }
         ];
 
-        const result = parseModel(obj);
+        const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
             title: 'test',
             shortcut: 'test',

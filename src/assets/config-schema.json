@@ -4,9 +4,8 @@
   "definitions": {
     "app_part": {
       "type": "object",
-      "required": [
-        "title",
-        "shortcut"
+      "required" :[
+        "title"
       ],
       "properties": {
         "title": {
@@ -70,7 +69,6 @@
         },
         "required": [
           "title",
-          "shortcut",
           "urlTemplate",
           "children"
         ]

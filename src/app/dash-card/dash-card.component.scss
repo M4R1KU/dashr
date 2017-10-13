@@ -1,3 +1,11 @@
 mat-card {
     cursor: pointer;
+    padding: 0;
+    > * {
+        display: block;
+        padding: 24px;
+    }
+    > a, a:hover, a:active, a:focus, a:visited {
+        text-decoration: none;
+    }
 }

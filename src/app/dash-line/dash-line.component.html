@@ -1,14 +1,18 @@
 <div class="card-wrapper">
     <dashr-dash-card *ngFor="let child of dashChildren"
                      [dashModel]="child"
-                     (activate)="activeChild$.next(child)">
+                     (activate)="activateChild($event)">
     </dashr-dash-card>
 </div>
 <div class="children-wrapper"
-     *ngIf="activeChild$ | async">
+     *ngIf="activeChild && activeChild.children">
     <div class="dash-divider">
         <mat-icon>expand_more</mat-icon>
-        <span>{{ (activeChild$ | async).levelLabel || (activeChild$ | async).title }}</span>
+        <span>{{ activeChild.levelLabel || activeChild.title }}</span>
     </div>
-    <dashr-dash-line [dashChildren]="(activeChild$ | async).children"></dashr-dash-line>
+    <dashr-dash-line [dashChildren]="activeChild.children"
+                     [path]="childPath"
+                     [pathSnapshot]="activeChild.shortcut"
+                     (dashChange)="dashChange.emit('/' + pathSnapshot + $event)">
+    </dashr-dash-line>
 </div>
