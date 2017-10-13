@@ -1,8 +1,8 @@
 
-import {DashConfigParser} from './dash-config-parser.service';
+import {DashConfigParserService} from './dash-config-parser.service';
 
 describe('DashModelParser', () => {
-    const parser: DashConfigParser = new DashConfigParser();
+    const parser: DashConfigParserService = new DashConfigParserService();
 
     it('parses basic model', () => {
         const obj = [{

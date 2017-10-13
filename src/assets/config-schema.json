@@ -4,6 +4,7 @@
   "definitions": {
     "app_part": {
       "type": "object",
+      "description": "Schema for child elements",
       "required" :[
         "title"
       ],
@@ -49,6 +50,9 @@
           "shortcut": {
             "type": "string"
           },
+          "profile": {
+            "type": "string"
+          },
           "urlTemplate": {
             "type": "string",
             "minLength": 4
@@ -78,6 +82,25 @@
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/app_part"
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9\\-_]+$"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
       }
     }
   }

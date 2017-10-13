@@ -1,12 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Http} from '@angular/http';
 import * as Ajv from 'ajv';
-import {DashConfigParser} from './parser/dash-config-parser.service';
+import {DashConfigParserService} from './parser/dash-config-parser.service';
 import {DashModel} from './model/dash-model';
 import {Subject} from 'rxjs/Subject';
-import {extractResponse} from './util/helper';
+import {extractResponse, isNullOrUndefined} from './util/helper';
 import {ConfigModel} from './model/config-model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Profile} from './model/profile';
+import {ConfigService} from './service/config.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
     selector: 'dashr-root',
@@ -15,32 +17,19 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 })
 export class AppComponent implements OnInit {
     public config$: Subject<Array<DashModel>> = new Subject();
-    public path$: Subject<string> = new BehaviorSubject(window.location.pathname);
+    public path$: Subject<string> = new BehaviorSubject(location.pathname);
     @ViewChild('clipboardHelper') private _clipboardHelper: ElementRef;
 
-    constructor(private _http: Http,
-                private _dashConfigParser: DashConfigParser) {
+    constructor(private _configService: ConfigService) {
     }
 
     ngOnInit(): void {
-        const ajv = new Ajv({allErrors: true});
-
-        this._http.get('/assets/config-schema.json')
-            .map(extractResponse)
-            .switchMap(schema => this._http.get('/assets/config.json')
-                .map(extractResponse)
-                .map(data => {
-                    return {
-                        parseResult: ajv.validate(schema, data),
-                        data: data
-                    };
-                })
-            )
-            .subscribe((result: any) => this._handleConfigLoad(result, ajv));
+        this._configService.loadConfig()
+            .subscribe(dashModel => this.config$.next(dashModel));
     }
 
     public dashChange(path: string) {
-        window.history.pushState('', '', path);
+        history.pushState('', '', path);
         this.path$.next(path);
     }
 
@@ -52,14 +41,5 @@ export class AppComponent implements OnInit {
         } catch (error) {
             console.error(error);
         }
-    }
-
-    private _handleConfigLoad(config: { parseResult: boolean, data: ConfigModel }, ajv: any) {
-        if (!config.parseResult) {
-            console.error('failed to load config');
-            console.log(ajv.errorsText());
-            return;
-        }
-        this.config$.next(this._dashConfigParser.parseModel(config.data));
     }
 }
