@@ -8,7 +8,6 @@ import {HttpModule} from '@angular/http';
 import {DashLineComponent} from './dash-line/dash-line.component';
 import {DashCardComponent} from './dash-card/dash-card.component';
 import {DashConfigParser} from './parser/dash-config-parser.service';
-import {RouterModule} from '@angular/router';
 
 @NgModule({
     declarations: [

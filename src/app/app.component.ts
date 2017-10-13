@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Http} from '@angular/http';
 import * as Ajv from 'ajv';
 import {DashConfigParser} from './parser/dash-config-parser.service';
@@ -16,6 +16,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 export class AppComponent implements OnInit {
     public config$: Subject<Array<DashModel>> = new Subject();
     public path$: Subject<string> = new BehaviorSubject(window.location.pathname);
+    @ViewChild('clipboardHelper') private _clipboardHelper: ElementRef;
 
     constructor(private _http: Http,
                 private _dashConfigParser: DashConfigParser) {
@@ -38,9 +39,18 @@ export class AppComponent implements OnInit {
             .subscribe((result: any) => this._handleConfigLoad(result, ajv));
     }
 
-    dashChange(path: string) {
+    public dashChange(path: string) {
         window.history.pushState('', '', path);
         this.path$.next(path);
+    }
+
+    public copyCurrentPath() {
+        try {
+            this._clipboardHelper.nativeElement.select();
+            document.execCommand('copy');
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     private _handleConfigLoad(config: { parseResult: boolean, data: ConfigModel }, ajv: any) {

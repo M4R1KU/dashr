@@ -1,15 +1,14 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DashModel} from '../model/dash-model';
-import {Observable} from 'rxjs/Observable';
-import {isNullOrUndefined} from '../util/helper';
 import {Subject} from 'rxjs/Subject';
+import * as queryString from 'querystring';
 
 @Component({
     selector: 'dashr-dash-card',
     templateUrl: './dash-card.component.html',
     styleUrls: ['./dash-card.component.scss']
 })
-export class DashCardComponent implements OnInit {
+export class DashCardComponent implements OnInit, AfterViewChecked {
     @Input() dashModel: DashModel;
     @Output() activate: EventEmitter<any> = new EventEmitter();
     @ViewChild('link') public link: ElementRef;
@@ -18,6 +17,15 @@ export class DashCardComponent implements OnInit {
 
     ngOnInit() {
         this._click$.subscribe(model => this.activate.emit(model));
+    }
+
+    ngAfterViewChecked(): void {
+        if (this.dashModel.url) {
+            const params = queryString.parse(location.search.replace('?', ''));
+            if (params.mode && params.mode === 'redirect') {
+                this.link.nativeElement.click();
+            }
+        }
     }
 
     @HostListener('click')

@@ -1,8 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {DashModel} from '../model/dash-model';
-import {Subject} from 'rxjs/Subject';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {isEmpty, isNotNullOrUndefined} from '../util/helper';
+import {isNotNullOrUndefined} from '../util/helper';
 
 @Component({
     selector: 'dashr-dash-line',

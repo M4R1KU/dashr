@@ -1,4 +1,11 @@
-<mat-toolbar color="primary"></mat-toolbar>
+<mat-toolbar color="primary">
+    <button mat-button
+            (click)="copyCurrentPath()">
+        Copy current app path
+        <mat-icon>content_copy</mat-icon>
+    </button>
+    <input class="clipboard-helper" type="text" [value]="(path$ | async) + '?mode=redirect'" #clipboardHelper>
+</mat-toolbar>
 <dashr-dash-line [dashChildren]="config$ | async"
                  [path]="path$ | async"
                  (dashChange)="dashChange($event)">
