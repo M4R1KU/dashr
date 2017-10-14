@@ -41,7 +41,7 @@ export class DashConfigParser {
 
     private useModelOrCommonModel(model: string | object, commonTypes: any) {
         if (typeof model === 'string' && model.startsWith(this.COMMON_TYPE_INDICATOR)) {
-            return commonTypes[model.replace(this.COMMON_TYPE_INDICATOR, '')];
+            return JSON.parse(JSON.stringify(commonTypes[model.replace(this.COMMON_TYPE_INDICATOR, '')]));
         } else if (typeof model === 'object') {
             return model;
         } else {

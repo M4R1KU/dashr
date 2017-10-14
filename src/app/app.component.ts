@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
 
     public copyCurrentPath() {
         try {
+            this._clipboardHelper.nativeElement.value = location.href + '?mode=redirect';
             this._clipboardHelper.nativeElement.select();
             document.execCommand('copy');
         } catch (error) {
