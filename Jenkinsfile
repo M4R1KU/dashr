@@ -25,8 +25,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                    sh 'ng test --watch=false --single-run --browser=PhantomJS'
-                }
+                sh 'ng test --watch=false --single-run --browser=PhantomJS'
             }
         }
     }
