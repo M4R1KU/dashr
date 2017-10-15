@@ -29,5 +29,16 @@ pipeline {
                 sh 'ng test --watch=false --single-run --browser=PhantomJS'
             }
         }
+
+        stage('Docker Push') {
+            environment { DOCKER = credentials('docker-deploy') }
+            steps {
+                sh 'docker login -u "$DOCKER_USR" -p "$DOCKER_PSW" docker.mkweb.me:443'
+
+                sh 'docker build -t docker.mkweb.me:443/dashr:$BUILD_NUMBER -t docker.mkweb.me,e:443/dashr:latest .'
+
+                sh 'docker push docker.mkweb.me:443/dashr:$BUILD_NUMBER && docker push docker.mkweb.me:443:latest'
+            }
+        }
     }
 }
