@@ -14,6 +14,7 @@ pipeline {
                         configFile(fileId: '59d1c401-7bc1-4c14-b8f4-7f0f3aadecd0', targetLocation: 'src/assets/config.json')
                     ]) {}
                 }
+                sh 'yarn'
             }
         }
 
