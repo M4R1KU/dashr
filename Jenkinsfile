@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-               image 'm4r1ku/angular-cli'
+               image 'm4r1ku/docker-angular-cli'
                args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -9,7 +9,24 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                sh 'echo "Hello mate"'
+                script {
+                    configFileProvider([
+                        configFile(fileId: '59d1c401-7bc1-4c14-b8f4-7f0f3aadecd0', targetLocation: 'src/assets/config.json')
+                    ]) {}
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'ng build --prod'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                    sh 'ng test --watch=false --single-run --browser=PhantomJS'
+                }
             }
         }
     }
