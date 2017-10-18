@@ -3,14 +3,20 @@ import {DashConfigParserService} from './dash-config-parser.service';
 
 describe('DashModelParser', () => {
     const parser: DashConfigParserService = new DashConfigParserService();
+    const toBaseModel = (apps: any[]) => {
+        return {
+            apps: apps
+        };
+    };
+
 
     it('parses basic model', () => {
-        const obj = [{
+        const obj = toBaseModel([{
             title: 'test',
             shortcut: 'test',
             urlTemplate: 'https://example.com',
             children: []
-        }];
+        }]);
 
         const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
@@ -22,7 +28,7 @@ describe('DashModelParser', () => {
     });
 
     it('parses model with child', () => {
-        const obj = [{
+        const obj = toBaseModel([{
             title: 'test',
             shortcut: 'test',
             urlTemplate: 'https://example.com',
@@ -32,7 +38,7 @@ describe('DashModelParser', () => {
                     shortcut: 'testChild'
                 }
             ]
-        }];
+        }]);
 
         const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
@@ -49,7 +55,7 @@ describe('DashModelParser', () => {
     });
 
     it('interpolates child url correctly', () => {
-        const obj = [{
+        const obj = toBaseModel([{
             title: 'test',
             shortcut: 'test',
             urlTemplate: 'https://{env}example.com',
@@ -62,7 +68,7 @@ describe('DashModelParser', () => {
                     }
                 }
             ]
-        }];
+        }]);
 
         const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
@@ -79,7 +85,7 @@ describe('DashModelParser', () => {
     });
 
     it('works with a big hierarchy', () => {
-        const obj = [{
+        const obj = toBaseModel([{
             title: 'test',
             shortcut: 'test',
             urlTemplate: 'https://{env}example.com/{app}/{route}',
@@ -110,7 +116,7 @@ describe('DashModelParser', () => {
                     ]
                 }
             ]
-        }];
+        }]);
 
         const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{
@@ -139,7 +145,7 @@ describe('DashModelParser', () => {
     });
 
     it('does not fuck up url when key is not available', () => {
-        const obj = [
+        const obj = toBaseModel([
             {
                 title: 'test',
                 shortcut: 'test',
@@ -154,7 +160,7 @@ describe('DashModelParser', () => {
                     }
                 ]
             }
-        ];
+        ]);
 
         const result = parser.parseModel(obj);
         expect(result).toEqual(<any>[{

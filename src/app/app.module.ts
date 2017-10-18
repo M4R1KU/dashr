@@ -11,6 +11,7 @@ import {ConfigService} from './service/config.service';
 import * as Ajv from 'ajv';
 import {AJV} from './service/ajv-injection-token';
 import {HttpClientModule} from '@angular/common/http';
+import {ajvProvider} from './service/factories';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,7 @@ import {HttpClientModule} from '@angular/common/http';
         ConfigService,
         {
             provide: AJV,
-            useFactory: () => Ajv({allErrors: true})
+            useFactory: ajvProvider
         }
     ],
     bootstrap: [
