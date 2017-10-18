@@ -37,7 +37,7 @@ pipeline {
 
                 sh 'docker build -t docker.mkweb.me:443/dashr:$BUILD_NUMBER -t docker.mkweb.me:443/dashr:latest .'
 
-                sh 'docker push docker.mkweb.me:443/dashr:$BUILD_NUMBER && docker push docker.mkweb.me:443:latest'
+                sh 'docker push docker.mkweb.me:443/dashr:$BUILD_NUMBER && docker push docker.mkweb.me:443/dashr:latest'
             }
         }
     }
