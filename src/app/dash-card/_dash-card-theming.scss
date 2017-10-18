@@ -1,7 +1,7 @@
 @mixin dash-card-theming($theme) {
-  mat-card {
-    a, a:hover, a:active, a:focus, a:visited {
-      color: map-get(map-get($theme, foreground), base);
+    mat-card {
+        a, a:hover, a:active, a:focus, a:visited {
+            color: map-get(map-get($theme, foreground), base);
+        }
     }
-  }
 }

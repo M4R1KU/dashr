@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 mat-card {
     cursor: pointer;
     padding: 0;
@@ -7,5 +9,9 @@ mat-card {
     }
     > a, a:hover, a:active, a:focus, a:visited {
         text-decoration: none;
+    }
+
+    &:hover {
+        @include mat-elevation(6);
     }
 }
