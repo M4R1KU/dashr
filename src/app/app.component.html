@@ -5,6 +5,11 @@
         <mat-icon>content_copy</mat-icon>
     </button>
     <input class="clipboard-helper" type="text" #clipboardHelper>
+    <span class="filler"></span>
+    <dashr-profile-chooser *ngIf="profiles"
+                           [profiles]="profiles"
+                           (profileChange)="profile$.next($event)">
+    </dashr-profile-chooser>
 </mat-toolbar>
 <dashr-dash-line [dashChildren]="config$ | async"
                  [path]="path$ | async"

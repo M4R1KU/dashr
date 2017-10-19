@@ -1,5 +1,5 @@
 import {DashModel} from '../model/dash-model';
-import {isEmpty, isNullOrUndefined} from '../util/helper';
+import {clone, isEmpty, isNullOrUndefined} from '../util/helper';
 import {ConfigModel} from '../model/config-model';
 import {Injectable} from '@angular/core';
 import {Profile} from '../model/profile';
@@ -13,7 +13,7 @@ export class DashConfigParserService {
     }
 
     public parseModel(source: ConfigModel, profile: string = ''): Array<DashModel> {
-        return source.apps
+        return clone(source).apps
             .filter(app => this._matchProfile(app, profile))
             .map(element => {
                 if (!isEmpty(element.children)) {
@@ -52,7 +52,7 @@ export class DashConfigParserService {
 
     private _useModelOrCommonModel(model: string | object, commonTypes: any) {
         if (typeof model === 'string' && model.startsWith(this.COMMON_TYPE_INDICATOR)) {
-            return JSON.parse(JSON.stringify(commonTypes[model.replace(this.COMMON_TYPE_INDICATOR, '')]));
+            return clone(commonTypes[model.replace(this.COMMON_TYPE_INDICATOR, '')]);
         } else if (typeof model === 'object') {
             return model;
         } else {

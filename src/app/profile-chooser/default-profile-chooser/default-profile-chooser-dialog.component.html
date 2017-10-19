@@ -1,0 +1,6 @@
+<mat-dialog-content>
+    <mat-card *ngFor="let profile of profiles"
+              (click)="selectProfile(profile)">
+        {{ profile.name }}
+    </mat-card>
+</mat-dialog-content>

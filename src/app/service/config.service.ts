@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {Ajv, ValidateFunction} from 'ajv';
 import {AJV} from './ajv-injection-token';
-import {extractResponse, isEmpty, isNullOrUndefined} from '../util/helper';
+import {clone, isEmpty, isNullOrUndefined} from '../util/helper';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {ConfigModel} from '../model/config-model';
 import {Profile} from '../model/profile';
@@ -80,8 +80,8 @@ export class ConfigService {
     }
 
     private _saveConfig(config: ConfigModel) {
-        this._config = config;
-        this._profiles = config.profiles;
+        this._config = clone(config);
+        this._profiles = clone(config.profiles);
     }
 
     public get config(): ConfigModel {

@@ -1,18 +1,27 @@
 import {NgModule} from '@angular/core';
-import {MatButtonModule, MatCardModule, MatIconModule, MatToolbarModule} from '@angular/material';
+import {
+    MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatSelectModule,
+    MatToolbarModule
+} from '@angular/material';
 
 @NgModule({
     imports: [
         MatToolbarModule,
         MatCardModule,
         MatIconModule,
-        MatButtonModule
+        MatButtonModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatSelectModule
     ],
     exports: [
         MatToolbarModule,
         MatCardModule,
         MatIconModule,
-        MatButtonModule
+        MatButtonModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatSelectModule
     ]
 })
 export class DashrMaterialModule {

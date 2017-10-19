@@ -12,6 +12,6 @@ export function isEmpty(toCheck: Array<any> | string): boolean {
     return isNullOrUndefined(toCheck) || toCheck.length === 0;
 }
 
-export function extractResponse(response: Response): any  {
-    return response.json();
+export function clone(obj: any): any {
+    return JSON.parse(JSON.stringify(obj));
 }

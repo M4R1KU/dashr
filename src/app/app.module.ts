@@ -12,17 +12,23 @@ import * as Ajv from 'ajv';
 import {AJV} from './service/ajv-injection-token';
 import {HttpClientModule} from '@angular/common/http';
 import {ajvProvider} from './service/factories';
+import {ProfileChooserComponent} from './profile-chooser/profile-chooser.component';
+import {DefaultProfileChooserDialogComponent} from './profile-chooser/default-profile-chooser/default-profile-chooser-dialog.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     declarations: [
         AppComponent,
         DashLineComponent,
-        DashCardComponent
+        DashCardComponent,
+        ProfileChooserComponent,
+        DefaultProfileChooserDialogComponent
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        FormsModule,
         DashrMaterialModule
     ],
     providers: [
@@ -32,6 +38,9 @@ import {ajvProvider} from './service/factories';
             provide: AJV,
             useFactory: ajvProvider
         }
+    ],
+    entryComponents: [
+        DefaultProfileChooserDialogComponent
     ],
     bootstrap: [
         AppComponent
