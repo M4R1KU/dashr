@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
                image 'm4r1ku/docker-angular-cli'
-               args '-v /var/run/docker.sock:/var/run/docker.sock'
+               args '-v /var/run/docker.sock:/var/run/docker.sock -v /opt/yarn/cache:/cache -e "YARN_CACHE_FOLDER=/cache"'
         }
     }
 
@@ -39,6 +39,11 @@ pipeline {
 
                 sh 'docker push docker.mkweb.me:443/dashr:$BUILD_NUMBER && docker push docker.mkweb.me:443/dashr:latest'
             }
+        }
+    }
+    post {
+        always {
+            deleteDir()
         }
     }
 }
