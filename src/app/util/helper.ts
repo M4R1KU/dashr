@@ -1,5 +1,3 @@
-import {Response} from '@angular/http';
-
 export function isNullOrUndefined(toCheck: any): boolean {
     return toCheck === null || toCheck === undefined;
 }
@@ -13,5 +11,8 @@ export function isEmpty(toCheck: Array<any> | string): boolean {
 }
 
 export function clone(obj: any): any {
+    if (isNullOrUndefined(obj)) {
+        return {};
+    }
     return JSON.parse(JSON.stringify(obj));
 }

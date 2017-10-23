@@ -8,10 +8,6 @@ import {Profile} from '../model/profile';
 export class DashConfigParserService {
     private readonly COMMON_TYPE_INDICATOR = 'common#';
 
-    public getAvailableProfilesFromModel(source: ConfigModel): Array<Profile> {
-        return (source.profiles || []) as Array<Profile>;
-    }
-
     public parseModel(source: ConfigModel, profile: string = ''): Array<DashModel> {
         return clone(source).apps
             .filter(app => this._matchProfile(app, profile))
