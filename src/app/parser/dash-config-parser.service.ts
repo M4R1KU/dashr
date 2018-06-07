@@ -7,6 +7,7 @@ import {Profile} from '../model/profile';
 @Injectable()
 export class DashConfigParserService {
     private readonly COMMON_TYPE_INDICATOR = 'common#';
+    private readonly OVERRIDE_MODIFIER = '!';
 
     public parseModel(source: ConfigModel, profile: string = ''): Array<DashModel> {
         return clone(source).apps
@@ -27,18 +28,24 @@ export class DashConfigParserService {
         return isEmpty(profile) || isNullOrUndefined(app.profile) || app.profile.toLowerCase() === profile.toLowerCase();
     }
 
-    private _parseChildWithUrl(child: any, urlTemplate: string, commonTypes: any): DashModel {
+    private _parseChildWithUrl(child: any, urlTemplate: string, commonTypes: any, treeUrlParts = {}): DashModel {
         if (!isNullOrUndefined(child.urlParts)) {
-            Object.keys(child.urlParts)
-                .forEach(key => urlTemplate = this._interpolateUrl(urlTemplate, key, child.urlParts[key]));
-            delete child.urlParts;
+            treeUrlParts = Object.assign(treeUrlParts, child.urlParts);
         }
 
         if (!isEmpty(child.children)) {
             child.children = child.children.map(c =>
-                this._parseChildWithUrl(this._useModelOrCommonModel(c, commonTypes), urlTemplate, commonTypes)
+                this._parseChildWithUrl(this._useModelOrCommonModel(c, commonTypes), urlTemplate, commonTypes, treeUrlParts)
             );
         } else {
+            const keys = Object.keys(treeUrlParts);
+            const parts = {
+                overrides: keys.filter(key => this._isOverride(key)),
+                primaries: keys.filter(key => !this._isOverride(key))
+            };
+
+            this._interpolateUrl(urlTemplate, parts, child.urlParts);
+
             child.url = this._cleanUrlFromBraces(urlTemplate);
         }
         this._useTitleAsShortCutIfMissing(child);
@@ -62,11 +69,19 @@ export class DashConfigParserService {
         }
     }
 
-    private _interpolateUrl(url: string, key: string, val: string): string {
-        return url.replace(`{${key}}`, val);
+    private _interpolateUrl(urlTemplate: string, parts: { overrides: string[], primaries: string[] }, values: { string: string }) {
+        console.log(parts);
+    }
+
+    private _interpolateKey(urlTemplate: string, key: string, val: string): string {
+        return urlTemplate.replace(`{${key}}`, val);
     }
 
     private _cleanUrlFromBraces(url: string) {
         return url.replace(RegExp('\{[a-zA-z0-9]+\}'), '');
+    }
+
+    private _isOverride(key: string): boolean {
+        return key.startsWith(this.OVERRIDE_MODIFIER);
     }
 }
