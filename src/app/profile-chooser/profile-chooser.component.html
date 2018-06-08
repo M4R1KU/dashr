@@ -1,5 +1,5 @@
 <mat-form-field *ngIf="currentProfile">
-    <mat-select (change)="selectChange$.next($event)" [(ngModel)]="currentProfile" [compareWith]="selectComparator">
+    <mat-select (selectionChange)="selectChange$.next($event)" [(ngModel)]="currentProfile" [compareWith]="selectComparator">
         <mat-option *ngFor="let profile of profiles" [value]="profile">
             {{ profile.name }}
         </mat-option>

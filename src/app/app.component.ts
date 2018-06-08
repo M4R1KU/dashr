@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DashModel} from './model/dash-model';
-import {Subject} from 'rxjs/Subject';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {ConfigService} from './service/config.service';
 import {Profile} from './model/profile';
 import {ConfigModel} from './model/config-model';
@@ -14,10 +13,10 @@ import {ConfigModel} from './model/config-model';
 export class AppComponent implements OnInit, OnDestroy {
     public config$: Subject<Array<DashModel>> = new Subject();
     public profile$: Subject<Profile> = new Subject();
+    public profiles$: Subject<Array<Profile>> = new BehaviorSubject([]);
     public path$: Subject<string> = new BehaviorSubject(location.pathname);
-    @ViewChild('clipboardHelper') private _clipboardHelper: ElementRef;
 
-    private _profiles: Array<Profile>;
+    @ViewChild('clipboardHelper') private _clipboardHelper: ElementRef;
 
     constructor(private _configService: ConfigService) {
     }
@@ -29,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.profile$.complete();
+        this.profiles$.complete();
         this.config$.complete();
         this.path$.complete();
     }
@@ -50,14 +50,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private _initProfileAndModel(config: ConfigModel) {
         if (config.profiles) {
-            this._profiles = config.profiles;
+            this.profiles$.next(config.profiles);
             this.profile$.subscribe(profile => this.config$.next(this._configService.switchProfile(profile.id)));
         } else {
             this.config$.next(this._configService.parse(config));
         }
-    }
-
-    get profiles(): Array<Profile> {
-        return this._profiles;
     }
 }

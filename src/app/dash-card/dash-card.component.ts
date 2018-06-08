@@ -1,6 +1,6 @@
 import {AfterViewChecked, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DashModel} from '../model/dash-model';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import * as queryString from 'querystring';
 
 @Component({

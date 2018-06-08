@@ -1,15 +1,15 @@
 import {Inject, Injectable} from '@angular/core';
-import {Ajv, ValidateFunction} from 'ajv';
+import {Ajv} from 'ajv';
 import {AJV} from './ajv-injection-token';
 import {clone, isEmpty, isNullOrUndefined} from '../util/helper';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {ConfigModel} from '../model/config-model';
 import {Profile} from '../model/profile';
 import {DashModel} from '../model/dash-model';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {environment} from '../../environments/environment';
 import {DashConfigParserService} from '../parser/dash-config-parser.service';
+import {switchMap, tap} from 'rxjs/internal/operators';
+import {Observable, ReplaySubject, of, throwError} from 'rxjs';
 
 @Injectable()
 export class ConfigService {
@@ -27,9 +27,10 @@ export class ConfigService {
     }
 
     public loadConfig(): Observable<ConfigModel> {
-        return this._http.get<ConfigModel>(environment.configPath)
-            .switchMap(config => this._validate(config))
-            .do(config => this._saveConfig(config));
+        return this._http.get<ConfigModel>(environment.configPath).pipe(
+            switchMap(config => this._validate(config)),
+            tap((config: ConfigModel) => this._saveConfig(config))
+        );
     }
 
     public switchProfile(profileId: string): Array<DashModel> {
@@ -74,9 +75,9 @@ export class ConfigService {
     private _validate(config): Observable<ConfigModel> {
         const validationResult = this._ajv.validate('config-schema', config);
         if (validationResult === true) {
-            return Observable.of(config);
+            return of<ConfigModel>(config);
         }
-        return Observable.throw(this._ajv.errorsText());
+        return throwError(this._ajv.errorsText());
     }
 
     private _saveConfig(config: ConfigModel) {

@@ -2,12 +2,10 @@ import {DashModel} from '../model/dash-model';
 import {clone, isEmpty, isNullOrUndefined} from '../util/helper';
 import {ConfigModel} from '../model/config-model';
 import {Injectable} from '@angular/core';
-import {Profile} from '../model/profile';
 
 @Injectable()
 export class DashConfigParserService {
     private readonly COMMON_TYPE_INDICATOR = 'common#';
-    private readonly OVERRIDE_MODIFIER = '!';
 
     public parseModel(source: ConfigModel, profile: string = ''): Array<DashModel> {
         return clone(source).apps
@@ -38,17 +36,10 @@ export class DashConfigParserService {
                 this._parseChildWithUrl(this._useModelOrCommonModel(c, commonTypes), urlTemplate, commonTypes, treeUrlParts)
             );
         } else {
-            const keys = Object.keys(treeUrlParts);
-            const parts = {
-                overrides: keys.filter(key => this._isOverride(key)),
-                primaries: keys.filter(key => !this._isOverride(key))
-            };
-
-            this._interpolateUrl(urlTemplate, parts, child.urlParts);
-
-            child.url = this._cleanUrlFromBraces(urlTemplate);
+            child.url = this._cleanUrlFromBraces(this._interpolateUrl(urlTemplate, treeUrlParts));
         }
         this._useTitleAsShortCutIfMissing(child);
+        delete child.urlParts;
 
         return child;
     }
@@ -69,8 +60,10 @@ export class DashConfigParserService {
         }
     }
 
-    private _interpolateUrl(urlTemplate: string, parts: { overrides: string[], primaries: string[] }, values: { string: string }) {
-        console.log(parts);
+    private _interpolateUrl(urlTemplate: string, parts: { [key: string]: string }) {
+        Object.entries(parts)
+            .forEach(([key, value]) => urlTemplate = this._interpolateKey(urlTemplate, key, value));
+        return urlTemplate;
     }
 
     private _interpolateKey(urlTemplate: string, key: string, val: string): string {
@@ -79,9 +72,5 @@ export class DashConfigParserService {
 
     private _cleanUrlFromBraces(url: string) {
         return url.replace(RegExp('\{[a-zA-z0-9]+\}'), '');
-    }
-
-    private _isOverride(key: string): boolean {
-        return key.startsWith(this.OVERRIDE_MODIFIER);
     }
 }
