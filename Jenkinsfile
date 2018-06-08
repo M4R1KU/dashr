@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-               image 'm4r1ku/docker-angular-cli:latest'
+               image 'm4r1ku/docker-angular-cli:9.11'
                args '-v /var/run/docker.sock:/var/run/docker.sock -v /opt/yarn/cache:/cache -e "YARN_CACHE_FOLDER=/cache"'
         }
     }
