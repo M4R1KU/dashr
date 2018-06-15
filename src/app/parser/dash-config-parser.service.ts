@@ -94,7 +94,6 @@ export class DashConfigParserService {
             .filter(([key, value]) => this._isKeyPlaceholder(value))
             .map(([key, value]) => [key, this._replaceBraces(value, value)]);
 
-        console.log(toReplace);
         toReplace.forEach(([key, value]) => {
             if (!treeUrlParts.hasOwnProperty(value)) {
                 throw new Error(`Url Parts does not have property of name '${value}'. It must exist to be used as placeholder.`);
