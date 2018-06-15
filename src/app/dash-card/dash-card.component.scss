@@ -15,3 +15,8 @@ mat-card {
         @include mat-elevation(6);
     }
 }
+
+:host(.active) mat-card {
+    background-color: #efefef;
+    @include mat-elevation(4);
+}

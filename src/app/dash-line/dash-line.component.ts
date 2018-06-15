@@ -27,6 +27,10 @@ export class DashLineComponent implements OnChanges {
         }
     }
 
+    public isActiveChild(child) {
+        return this.activeChild && this.activeChild.shortcut === child.shortcut;
+    }
+
     public activateChild(dash: DashModel) {
         this.dashChange.emit(`/${dash.shortcut}`);
     }

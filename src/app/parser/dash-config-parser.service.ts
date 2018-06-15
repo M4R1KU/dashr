@@ -1,11 +1,12 @@
 import {DashModel} from '../model/dash-model';
-import {clone, isEmpty, isNullOrUndefined} from '../util/helper';
+import {clone, isEmpty, isNotNullOrUndefined, isNullOrUndefined} from '../util/helper';
 import {ConfigModel} from '../model/config-model';
 import {Injectable} from '@angular/core';
 
 @Injectable()
 export class DashConfigParserService {
     private readonly COMMON_TYPE_INDICATOR = 'common#';
+    private readonly KEY_PLACEHOLDER_REGEX = RegExp('\{([a-zA-z0-9]+)\}');
 
     public parseModel(source: ConfigModel, profile: string = ''): Array<DashModel> {
         return clone(source).apps
@@ -36,6 +37,7 @@ export class DashConfigParserService {
                 this._parseChildWithUrl(this._useModelOrCommonModel(c, commonTypes), urlTemplate, commonTypes, treeUrlParts)
             );
         } else {
+            treeUrlParts = this._resolveInternalPlaceholders(treeUrlParts);
             child.url = this._cleanUrlFromBraces(this._interpolateUrl(urlTemplate, treeUrlParts));
         }
         this._useTitleAsShortCutIfMissing(child);
@@ -71,6 +73,35 @@ export class DashConfigParserService {
     }
 
     private _cleanUrlFromBraces(url: string) {
-        return url.replace(RegExp('\{[a-zA-z0-9]+\}'), '');
+        return url.replace(this.KEY_PLACEHOLDER_REGEX, '');
+    }
+
+    private _replaceBraces(toClean: string, key: string) {
+        const match = toClean.match(this.KEY_PLACEHOLDER_REGEX);
+        if (isNotNullOrUndefined(match[1])) {
+            return match[1];
+        }
+        return key;
+    }
+
+    private _isKeyPlaceholder(key: string) {
+        const match = key.match(this.KEY_PLACEHOLDER_REGEX);
+        return isNotNullOrUndefined(match) && match.index === 0;
+    }
+
+    private _resolveInternalPlaceholders(treeUrlParts: { [key: string]: string }): { [key: string]: string } {
+        const toReplace = Object.entries(treeUrlParts)
+            .filter(([key, value]) => this._isKeyPlaceholder(value))
+            .map(([key, value]) => [key, this._replaceBraces(value, value)]);
+
+        console.log(toReplace);
+        toReplace.forEach(([key, value]) => {
+            if (!treeUrlParts.hasOwnProperty(value)) {
+                throw new Error(`Url Parts does not have property of name '${value}'. It must exist to be used as placeholder.`);
+            }
+            treeUrlParts[key] = treeUrlParts[value];
+        });
+
+        return treeUrlParts;
     }
 }

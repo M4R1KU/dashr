@@ -1,4 +1,7 @@
-import {AfterViewChecked, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    AfterViewChecked, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output,
+    ViewChild
+} from '@angular/core';
 import {DashModel} from '../model/dash-model';
 import {Subject} from 'rxjs';
 import * as queryString from 'querystring';
@@ -10,6 +13,7 @@ import * as queryString from 'querystring';
 })
 export class DashCardComponent implements OnInit, AfterViewChecked {
     @Input() dashModel: DashModel;
+    @Input() @HostBinding('class.active') active = false;
     @Output() activate: EventEmitter<any> = new EventEmitter();
     @ViewChild('link') public link: ElementRef;
 

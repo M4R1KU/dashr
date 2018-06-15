@@ -1,6 +1,7 @@
 <div class="card-wrapper">
     <dashr-dash-card *ngFor="let child of dashChildren"
                      [dashModel]="child"
+                     [active]="isActiveChild(child)"
                      (activate)="activateChild($event)">
     </dashr-dash-card>
 </div>
