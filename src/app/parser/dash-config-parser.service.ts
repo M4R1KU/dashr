@@ -29,7 +29,7 @@ export class DashConfigParserService {
 
     private _parseChildWithUrl(child: any, urlTemplate: string, commonTypes: any, treeUrlParts = {}): DashModel {
         if (!isNullOrUndefined(child.urlParts)) {
-            treeUrlParts = Object.assign(treeUrlParts, child.urlParts);
+            treeUrlParts = Object.assign(clone(treeUrlParts), child.urlParts);
         }
 
         if (!isEmpty(child.children)) {
@@ -50,7 +50,7 @@ export class DashConfigParserService {
         if (typeof model === 'string' && model.startsWith(this.COMMON_TYPE_INDICATOR)) {
             return clone(commonTypes[model.replace(this.COMMON_TYPE_INDICATOR, '')]);
         } else if (typeof model === 'object') {
-            return model;
+            return clone(model);
         } else {
             throw new Error(model + ' is neither applicable to a commonType nor a special type');
         }
